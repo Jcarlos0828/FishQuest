@@ -1,9 +1,12 @@
 import asyncio
+from typing import Any
+
 import duckdb
-from app.services.hf_client import list_table_urls, ServerType
+
+from app.services.hf_client import ServerType, list_table_urls
 
 
-def _describe_table(url: str) -> list[dict]:
+def _describe_table(url: str) -> list[dict[str, str]]:
     try:
         con = duckdb.connect()
         rows = con.execute(f"DESCRIBE SELECT * FROM read_parquet('{url}')").fetchall()
@@ -15,10 +18,10 @@ def _describe_table(url: str) -> list[dict]:
 
 async def get_tables(
     server: ServerType = "fishbase", version: str = "v25.04"
-) -> dict:
+) -> dict[str, Any]:
     table_urls = await list_table_urls(server=server, version=version)
 
-    async def describe(name: str, url: str) -> dict:
+    async def describe(name: str, url: str) -> dict[str, Any]:
         columns = await asyncio.to_thread(_describe_table, url)
         return {"name": name, "columns": columns}
 

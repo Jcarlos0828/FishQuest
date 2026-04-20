@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
 from typing import Annotated, Literal
-from fastapi import Query
+
+from fastapi import APIRouter, Query
+
 from app.schemas import HealthResponse
 from app.services.fishbase import get_health
 

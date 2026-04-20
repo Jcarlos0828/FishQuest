@@ -1,6 +1,7 @@
-from fastapi import APIRouter, HTTPException
 from typing import Annotated, Literal
-from fastapi import Query
+
+from fastapi import APIRouter, HTTPException, Query
+
 from app.schemas import TablesResponse
 from app.services.catalog import get_tables
 
@@ -19,4 +20,4 @@ async def tables(
         data = await get_tables(server=server, version=version)
         return TablesResponse(**data)
     except Exception as e:
-        raise HTTPException(status_code=503, detail=str(e))
+        raise HTTPException(status_code=503, detail=str(e)) from e

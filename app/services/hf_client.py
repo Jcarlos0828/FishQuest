@@ -1,9 +1,8 @@
-import ssl
-import json
 import asyncio
+import json
+import ssl
 import urllib.request
-from functools import lru_cache
-from typing import Literal
+from typing import Any, Literal
 
 _ssl_ctx = ssl.create_default_context()
 _ssl_ctx.check_hostname = False
@@ -17,19 +16,19 @@ DEFAULT_VERSION = "v25.04"
 ServerType = Literal["fishbase", "sealifebase"]
 
 
-def _fetch_json(url: str) -> list | dict:
+def _fetch_json(url: str) -> Any:
     with urllib.request.urlopen(url, timeout=10, context=_ssl_ctx) as r:
         return json.loads(r.read())
 
 
-async def fetch_json(url: str) -> list | dict:
+async def fetch_json(url: str) -> Any:
     return await asyncio.to_thread(_fetch_json, url)
 
 
 async def available_versions(server: ServerType = "fishbase") -> list[str]:
     sv = "fb" if server == "fishbase" else "slb"
     url = f"{HF_BASE}/api/{HF_REPO}/tree/{HF_BRANCH}/data/{sv}"
-    items = await fetch_json(url)
+    items: list[dict[str, Any]] = await fetch_json(url)
     return [item["path"].split("/")[-1] for item in items]
 
 
@@ -39,7 +38,7 @@ async def list_table_urls(
     sv = "fb" if server == "fishbase" else "slb"
     path = f"data/{sv}/{version}/parquet"
     url = f"{HF_BASE}/api/{HF_REPO}/tree/{HF_BRANCH}/{path}"
-    items = await fetch_json(url)
+    items: list[dict[str, Any]] = await fetch_json(url)
     return {
         item["path"].split("/")[-1].replace(".parquet", ""): (
             f"{HF_BASE}/{HF_REPO}/resolve/{HF_BRANCH}/{item['path']}"
