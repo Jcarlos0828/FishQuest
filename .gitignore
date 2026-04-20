@@ -15,3 +15,7 @@ venv/
 # IDE
 .vscode/
 .idea/
+
+# Linting and type checking caches
+.ruff_cache/
+.mypy_cache/
