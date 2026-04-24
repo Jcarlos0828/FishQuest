@@ -19,3 +19,6 @@ venv/
 # Linting and type checking caches
 .ruff_cache/
 .mypy_cache/
+
+# Local documentation
+docs/
