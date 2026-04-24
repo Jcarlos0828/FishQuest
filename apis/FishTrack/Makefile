@@ -10,11 +10,6 @@ help:
 	@echo "  make check      - Corre todos los hooks de pre-commit sobre el proyecto"
 
 run: art
-	@echo ""
-	@echo "Servidor corriendo en http://localhost:8005"
-	@echo "Swagger UI:          http://localhost:8005/docs"
-	@echo "ReDoc:               http://localhost:8005/redoc"
-	@echo ""
 	uv run python run.py
 
 art:
