@@ -6,8 +6,11 @@ from app.routes.health import router as health_router
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="FishQuest API",
-        description="Acceso a datos de FishBase y SeaLifeBase vía Parquet/DuckDB.",
+        title="OpenSeaLife API",
+        description=(
+            "Acceso centralizado a FishBase y SeaLifeBase "
+            "vía HuggingFace Parquet/DuckDB."
+        ),
         version="1.0.0",
     )
     app.include_router(health_router)
