@@ -14,7 +14,7 @@ VersionParam = Annotated[str, Query()]
 _service = FishbaseService()
 
 
-@router.get("/health", response_model=HealthResponse)
+@router.get("/datasource/health", response_model=HealthResponse)
 async def health(
     server: ServerParam = "fishbase",
     version: VersionParam = settings.default_version,
