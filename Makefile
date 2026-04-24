@@ -1,6 +1,6 @@
 PYTHON := python3
 
-.PHONY: help run install lint format typecheck check
+.PHONY: help run install lint format typecheck check art
 
 help:
 	@echo "Comandos disponibles:"
@@ -11,8 +11,20 @@ help:
 	@echo "  make typecheck  - Verifica tipos estaticos con mypy"
 	@echo "  make check      - Corre todos los hooks de pre-commit sobre el proyecto"
 
-run:
+run: art
+	@echo ""
+	@echo "Servidor corriendo en http://localhost:8005"
+	@echo "Swagger UI:          http://localhost:8005/docs"
+	@echo "ReDoc:               http://localhost:8005/redoc"
+	@echo ""
 	$(PYTHON) run.py
+
+art:
+	@echo "FFFFF III  SSSS H   H  QQQ  U   U EEEEE  SSSS TTTTT     ｡   ;,//;,    ,;/"
+	@echo "F      I  S     H   H Q   Q U   U E     S       T    º❍°ﾟ  o:::::::;;///"
+	@echo "FFFF   I   SSS  HHHHH Q Q Q U   U EEEE   SSS    T        >::::::::;;\\\\"
+	@echo "F      I      S H   H Q  QQ U   U E         S   T          ''\\\\\'\" ';\ "
+	@echo "F     III SSSS  H   H  QQQQ  UUU  EEEEE SSSS    T        "
 
 install:
 	pip install -r requirements.txt -r requirements-dev.txt
