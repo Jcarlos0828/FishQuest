@@ -13,6 +13,27 @@ from app.routes.ropensci_fishbase import router as ropensci_fishbase_router
 
 _logger = logging.getLogger("uvicorn.error")
 
+SCALAR_CUSTOM_CSS = """
+/* Visual divider between the default-style query params and the optional
+   filters in ropensci-fishbase endpoints. Relies on the param order
+   convention documented in docs/backlog.md:
+     1. server   2. version   3. limit   4. offset   5. include_total
+     6+. nullable filters
+   Brittle: targets the 6th .parameter-item by position. Scalar exposes no
+   data-name attribute to scope by parameter name. If a future endpoint in
+   the API deviates from the 5-default convention, the divider lands in the
+   wrong place. */
+.parameter-item:nth-child(5) {
+  padding-bottom: 0.75rem;
+  box-shadow: inset 0 -14px 14px -10px rgba(0, 0, 0, 0.7);
+}
+.parameter-item:nth-child(6) {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  box-shadow: inset 0 14px 14px -10px rgba(0, 0, 0, 0.7);
+}
+"""
+
 OPENAPI_TAGS = [
     {
         "name": "health",
@@ -60,6 +81,7 @@ def create_app() -> FastAPI:
             openapi_url=app.openapi_url,
             title=app.title,
             agent=AgentScalarConfig(disabled=True),
+            custom_css=SCALAR_CUSTOM_CSS,
         )
 
     register_error_handlers(app)
