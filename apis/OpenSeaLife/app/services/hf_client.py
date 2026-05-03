@@ -22,14 +22,14 @@ async def fetch_json(url: str) -> Any:
     return await asyncio.to_thread(_fetch_json, url)
 
 
-async def available_versions(server: ServerType = "fishbase") -> list[str]:
+async def available_versions(server: ServerType = "fishbase") -> set[str]:
     sv = "fb" if server == "fishbase" else "slb"
     url = (
         f"{settings.hf_base}/api/{settings.hf_repo}"
         f"/tree/{settings.hf_branch}/data/{sv}"
     )
     items: list[dict[str, Any]] = await fetch_json(url)
-    return [item["path"].split("/")[-1] for item in items]
+    return {item["path"].split("/")[-1] for item in items}
 
 
 async def list_table_urls(
