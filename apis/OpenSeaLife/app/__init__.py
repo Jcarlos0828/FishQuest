@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from scalar_fastapi import AgentScalarConfig, get_scalar_api_reference
 
+from app.error_handlers import register as register_error_handlers
 from app.routes.catalog import router as catalog_router
 from app.routes.health import router as health_router
 
@@ -38,6 +39,8 @@ def create_app() -> FastAPI:
             title=app.title,
             agent=AgentScalarConfig(disabled=True),
         )
+
+    register_error_handlers(app)
 
     app.include_router(health_router)
     app.include_router(catalog_router)
