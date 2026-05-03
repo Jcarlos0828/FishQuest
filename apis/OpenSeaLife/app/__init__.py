@@ -9,8 +9,29 @@ from scalar_fastapi import AgentScalarConfig, get_scalar_api_reference
 from app.error_handlers import register as register_error_handlers
 from app.routes.catalog import router as catalog_router
 from app.routes.health import router as health_router
+from app.routes.ropensci_fishbase import router as ropensci_fishbase_router
 
 _logger = logging.getLogger("uvicorn.error")
+
+OPENAPI_TAGS = [
+    {
+        "name": "health",
+        "description": "Connectivity check against the HuggingFace Parquet source.",
+    },
+    {
+        "name": "catalog",
+        "description": "Discovery of tables and their column schemas.",
+    },
+    {
+        "name": "ropensci-fishbase",
+        "description": (
+            "Endpoints inherited from the deprecated fishbaseapi.readme.io contract. "
+            "Surfaced because they were historically requested as the canonical query "
+            "shape for FishBase and SeaLifeBase. Backed by the same HuggingFace "
+            "Parquet datasets exposed by /tables."
+        ),
+    },
+]
 
 
 @asynccontextmanager
@@ -30,6 +51,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         lifespan=_lifespan,
         docs_url=None,
+        openapi_tags=OPENAPI_TAGS,
     )
 
     @app.get("/scalar", include_in_schema=False)
@@ -44,4 +66,5 @@ def create_app() -> FastAPI:
 
     app.include_router(health_router)
     app.include_router(catalog_router)
+    app.include_router(ropensci_fishbase_router)
     return app
